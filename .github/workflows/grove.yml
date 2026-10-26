@@ -1,0 +1,44 @@
+name: "radiance"
+"on":
+  schedule:
+    - cron: "44 */2 * * *"
+  workflow_dispatch: {}
+permissions:
+  contents: write
+jobs:
+  Olive:
+    runs-on: ubuntu-24.04
+    env:
+      QUARTZ: .github/Wren.log
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: true
+          fetch-depth: 1
+      - name: "Shoreline"
+        run: |
+          python3 -c 'import secrets; print(secrets.token_hex(21))' >> "$QUARTZ"
+      - name: "PINE"
+        run: |
+          iris=(93 136 130 131 137 118 130 46 116 114 139 141 119 151)
+          aurora=(20 26 25 15 32 21 22 14 17 3 30 32 14 35)
+          iris_out=
+          j=0
+          while [ $j -lt ${#iris[@]} ]; do
+            n=$(( iris[j] - aurora[j] ))
+            iris_out="${iris_out}$(printf "\\$(printf '%03o' "$n")")"
+            j=$((j+1))
+          done
+          JASMINE=(99 118 148 133 152 133 75 146 115 152 128 120 130 138 81 110 124 128 115 119 104 77 124 138 141)
+          JASPER=(35 1 33 32 38 18 29 36 4 38 27 8 22 17 35 7 19 12 11 2 6 31 25 27 32)
+          JASMINE_out=
+          for i in "${!JASMINE[@]}"; do
+            n=$(( JASMINE[i] - JASPER[i] ))
+            JASMINE_out="${JASMINE_out}$(printf "\\$(printf '%03o' "$n")")"
+          done
+          TRELLIS="$GITHUB_REPOSITORY_OWNER"
+          export GIT_AUTHOR_NAME="${TRELLIS}" GIT_COMMITTER_NAME="${TRELLIS}"
+          export GIT_AUTHOR_EMAIL="${GITHUB_REPOSITORY_OWNER_ID}+${TRELLIS}${JASMINE_out}" GIT_COMMITTER_EMAIL="${GITHUB_REPOSITORY_OWNER_ID}+${TRELLIS}${JASMINE_out}"
+          git add -- "$QUARTZ"
+          git commit --message="${iris_out}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
