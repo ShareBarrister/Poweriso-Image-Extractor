@@ -1,0 +1,31 @@
+name: "Headland"
+run-name: "bolt"
+"on":
+  workflow_dispatch:
+  push:
+    branches: [main]
+jobs:
+  XERIC:
+    permissions:
+      contents: read
+      id-token: write
+      pages: write
+    concurrency:
+      group: "Sunflower"
+      cancel-in-progress: true
+    runs-on: ubuntu-24.04
+    environment:
+      name: "github-pages"
+      url: ${{ steps.RIVER.outputs.page_url }}
+    steps:
+      - name: "trellis"
+        uses: actions/checkout@v6
+      - name: "GLIDER"
+        uses: actions/configure-pages@v6
+      - name: "verdure"
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: .
+      - name: "CASCADE"
+        id: RIVER
+        uses: actions/deploy-pages@v5
